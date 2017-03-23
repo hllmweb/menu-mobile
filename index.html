@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<script id="tinyhippos-injected">
+	if(window.top.ripple){ 
+		window.top.ripple("bootstrap").inject(window, document); 
+	}
+</script>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<script src="js/jquery.min.js"></script>
+	<meta name="viewport" content="width=device-width">
+	<meta name="theme-color" content="#71BA51">
+	<script src="js/jquery.touchSwipe.min.js"></script>
+	<style>
+		html{
+			height:100%;
+			position:relative;
+		}
+		body{
+			margin:0;
+			min-height: 100%;
+			width:100%;
+		}
+
+		.menu{
+			width:220px;
+			background:#E7E7E7;
+			height:100%;
+			height:100%;
+			position:fixed;
+			left:-225px;
+			-webkit-box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.3);
+			-moz-box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.3);
+			box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.3);
+		}
+		.menu.with-fade{
+			transition-duration:0.2s;
+		}
+		.menu.opened{
+			left:0px;
+		}
+
+		.distance{
+			position:fixed;
+			height:30px;
+			width:100px;
+			text-align:center;
+			border:1px solid #000;
+			right:0px;
+		}
+	</style>
+</head>
+<body cz-shortcut-listen="true">
+
+<div class="menu"></div>
+
+<div class="distance">
+	
+</div>
+
+
+<script>
+$(document).ready(function(){
+		$("body").swipe({
+		    swipeStatus:function(event, phase, direction, distance, duration, fingers){
+
+		    	$(".distance").text(distance +"px");
+
+  				fromleft = $(".menu").offset().left;
+
+		        if(phase=="move" && direction == "right"){
+		        	$(".menu").removeClass("with-fade");
+		        	if(distance < 220){
+		        		$(".menu").not(".opened").css("left", "calc(-225px + "+distance+"px)");
+		        	}
+		        }
+
+		        if(phase=="end" && direction == "right"){
+		        	$(".menu").addClass("with-fade");
+		        	if(distance > 110){
+		        		$(".menu").addClass("opened");
+		        		$(".menu").css("left", "0");
+		        	}else{
+		        		$(".menu").removeClass("opened");
+		        		$(".menu").css("left", "-225px");
+		        	}
+		        	
+		        }
+
+
+		        if(phase=="move" && direction == "left"){
+		        	$(".menu").removeClass("with-fade");
+		        	if(distance < 220){
+		        		$(".menu.opened").css("left", "-"+distance+"px");
+		        	}
+		        }
+		        if(phase=="end" && direction == "left"){
+		        	$(".menu").addClass("with-fade");
+		        	if(distance > 110){
+		        		$(".menu").removeClass("opened");
+		        		$(".menu").css("left", "-225px");
+		        	}else{
+		        		$(".menu").css("left", "0");
+		        	}
+		        }
+		    }
+		});
+});
+</script>
+</body>
+</html>
